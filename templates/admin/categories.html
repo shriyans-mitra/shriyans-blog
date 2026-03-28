@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% block title %}Categories · Admin{% endblock %}
+
+{% block content %}
+<div class="max-w-lg space-y-8">
+
+    <div class="flex items-center justify-between">
+        <h1 class="text-2xl font-bold">Categories</h1>
+        <a href="/admin" class="text-sm text-gray-500 hover:underline">← Dashboard</a>
+    </div>
+
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <div class="p-3 bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400 text-sm rounded-lg">
+        {{ messages[0] }}
+    </div>
+    {% endif %}
+    {% endwith %}
+
+    <form method="POST" class="flex gap-3">
+        <input type="text" name="name" placeholder="e.g. Technology" required
+               class="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-900 dark:focus:ring-white text-sm">
+        <button type="submit"
+                class="px-4 py-2 bg-gray-900 dark:bg-white text-white dark:text-gray-900 rounded-lg text-sm font-medium hover:opacity-80 transition-opacity">
+            Add
+        </button>
+    </form>
+
+    {% if categories %}
+    <div class="border border-gray-200 dark:border-gray-700 rounded-xl overflow-hidden">
+        <ul class="divide-y divide-gray-100 dark:divide-gray-800">
+            {% for cat in categories %}
+            <li class="flex items-center justify-between px-4 py-3">
+                <div>
+                    <p class="text-sm font-medium">{{ cat.name }}</p>
+                    <p class="text-xs text-gray-400 mt-0.5">
+                        /category/{{ cat.slug }} · {{ cat.posts | length }} post(s)
+                    </p>
+                </div>
+                <form action="/admin/delete-category/{{ cat.id }}" method="POST"
+                      onsubmit="return confirm('Delete \'{{ cat.name }}\'? Posts will become uncategorised.')">
+                    <button type="submit" class="text-xs text-red-500 hover:underline">Delete</button>
+                </form>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% else %}
+    <p class="text-sm text-gray-400 text-center py-10">No categories yet — add one above!</p>
+    {% endif %}
+
+</div>
+{% endblock %}

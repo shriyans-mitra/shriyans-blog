@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+{% block title %}Dashboard · Admin{% endblock %}
+
+{% block content %}
+<div class="space-y-8">
+
+    <div class="flex items-center justify-between">
+        <h1 class="text-2xl font-bold">Dashboard</h1>
+        <div class="flex items-center gap-3">
+            <a href="/admin/categories"
+               class="text-sm px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+                Categories
+            </a>
+            <a href="/admin/new-post"
+               class="text-sm px-4 py-2 bg-gray-900 dark:bg-white text-white dark:text-gray-900 rounded-lg hover:opacity-80 transition-opacity font-medium">
+                + New Post
+            </a>
+            <a href="/admin/logout"
+               class="text-sm text-red-500 hover:underline px-2">
+                Logout
+            </a>
+        </div>
+    </div>
+
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <div class="p-3 bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400 text-sm rounded-lg">
+        {{ messages[0] }}
+    </div>
+    {% endif %}
+    {% endwith %}
+
+    {% if posts %}
+    <div class="border border-gray-200 dark:border-gray-700 rounded-xl overflow-hidden">
+        <table class="w-full text-sm">
+            <thead class="bg-gray-50 dark:bg-gray-800 text-left">
+                <tr>
+                    <th class="px-4 py-3 font-medium text-gray-500 dark:text-gray-400">Title</th>
+                    <th class="px-4 py-3 font-medium text-gray-500 dark:text-gray-400">Category</th>
+                    <th class="px-4 py-3 font-medium text-gray-500 dark:text-gray-400">Date</th>
+                    <th class="px-4 py-3 font-medium text-gray-500 dark:text-gray-400">Status</th>
+                    <th class="px-4 py-3"></th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100 dark:divide-gray-800">
+                {% for post in posts %}
+                <tr class="hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
+                    <td class="px-4 py-3 font-medium">{{ post.title }}</td>
+                    <td class="px-4 py-3 text-gray-500 dark:text-gray-400">
+                        {{ post.category.name if post.category else '—' }}
+                    </td>
+                    <td class="px-4 py-3 text-gray-500 dark:text-gray-400">
+                        {{ post.created_at.strftime('%b %d, %Y') }}
+                    </td>
+                    <td class="px-4 py-3">
+                        {% if post.published %}
+                        <span class="px-2 py-0.5 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 rounded-full text-xs font-medium">
+                            Published
+                        </span>
+                        {% else %}
+                        <span class="px-2 py-0.5 bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400 rounded-full text-xs font-medium">
+                            Draft
+                        </span>
+                        {% endif %}
+                    </td>
+                    <td class="px-4 py-3">
+                        <div class="flex items-center justify-end gap-4">
+                            <a href="/post/{{ post.slug }}" target="_blank"
+                               class="text-xs text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition-colors">
+                                View
+                            </a>
+                            <a href="/admin/edit-post/{{ post.id }}"
+                               class="text-xs text-gray-600 dark:text-gray-300 hover:underline">
+                                Edit
+                            </a>
+                            <form action="/admin/delete-post/{{ post.id }}" method="POST"
+                                  onsubmit="return confirm('Are you sure you want to delete this post?')">
+                                <button type="submit" class="text-xs text-red-500 hover:underline">
+                                    Delete
+                                </button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="text-center py-24 text-gray-400 dark:text-gray-500">
+        <p class="text-lg font-medium">No posts yet.</p>
+        <a href="/admin/new-post" class="text-sm underline mt-1 inline-block">Write your first post →</a>
+    </div>
+    {% endif %}
+
+</div>
+{% endblock %}
