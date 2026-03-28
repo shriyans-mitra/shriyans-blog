@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block title %}Shriyans' Blog{% endblock %}
+
+{% block content %}
+<div class="space-y-10">
+
+    <div>
+        <h1 class="text-3xl font-bold mb-2">Latest Posts</h1>
+        <p class="text-gray-500 dark:text-gray-400">Thoughts, ideas, and things I've learned.</p>
+    </div>
+
+    {% if posts %}
+        <div class="divide-y divide-gray-100 dark:divide-gray-800">
+            {% for post in posts %}
+            <article class="py-8 group">
+                <div class="flex items-center gap-2 text-sm text-gray-400 dark:text-gray-500 mb-2">
+                    <time>{{ post.created_at.strftime('%B %d, %Y') }}</time>
+                    {% if post.category %}
+                    <span>·</span>
+                    <a href="/category/{{ post.category.slug }}"
+                       class="hover:text-gray-700 dark:hover:text-gray-300 transition-colors">
+                        {{ post.category.name }}
+                    </a>
+                    {% endif %}
+                </div>
+                <h2 class="text-xl font-semibold mb-2">
+                    <a href="/post/{{ post.slug }}"
+                       class="hover:opacity-75 transition-opacity">
+                        {{ post.title }}
+                    </a>
+                </h2>
+                {% if post.excerpt %}
+                <p class="text-gray-600 dark:text-gray-400 leading-relaxed">{{ post.excerpt }}</p>
+                {% endif %}
+                <a href="/post/{{ post.slug }}"
+                   class="inline-block mt-3 text-sm font-medium text-gray-900 dark:text-white hover:underline">
+                    Read more →
+                </a>
+            </article>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="text-center py-24 text-gray-400 dark:text-gray-500">
+            <p class="text-lg font-medium">No posts yet.</p>
+            <p class="text-sm mt-1">
+                Go to <a href="/admin" class="underline">the admin panel</a> to write your first post!
+            </p>
+        </div>
+    {% endif %}
+
+</div>
+{% endblock %}

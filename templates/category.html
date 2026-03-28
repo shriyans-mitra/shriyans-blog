@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ category.name }} · Shriyans' Blog{% endblock %}
+
+{% block content %}
+<div class="space-y-10">
+
+    <div>
+        <p class="text-sm text-gray-400 dark:text-gray-500 uppercase tracking-widest mb-1">Category</p>
+        <h1 class="text-3xl font-bold">{{ category.name }}</h1>
+    </div>
+
+    {% if posts %}
+        <div class="divide-y divide-gray-100 dark:divide-gray-800">
+            {% for post in posts %}
+            <article class="py-8">
+                <div class="text-sm text-gray-400 dark:text-gray-500 mb-2">
+                    <time>{{ post.created_at.strftime('%B %d, %Y') }}</time>
+                </div>
+                <h2 class="text-xl font-semibold mb-2">
+                    <a href="/post/{{ post.slug }}" class="hover:opacity-75 transition-opacity">
+                        {{ post.title }}
+                    </a>
+                </h2>
+                {% if post.excerpt %}
+                <p class="text-gray-600 dark:text-gray-400 leading-relaxed">{{ post.excerpt }}</p>
+                {% endif %}
+                <a href="/post/{{ post.slug }}"
+                   class="inline-block mt-3 text-sm font-medium hover:underline">
+                    Read more →
+                </a>
+            </article>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="text-center py-24 text-gray-400 dark:text-gray-500">
+            <p>No posts in this category yet.</p>
+        </div>
+    {% endif %}
+
+</div>
+{% endblock %}

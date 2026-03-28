@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Shriyans' Blog{% endblock %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        // Configure Tailwind before it loads
+        tailwind.config = { darkMode: 'class' }
+    </script>
+    <style type="text/tailwindcss">
+        .prose h2 { @apply text-2xl font-bold mt-8 mb-3; }
+        .prose h3 { @apply text-xl font-semibold mt-6 mb-2; }
+        .prose p  { @apply mb-4 leading-relaxed; }
+        .prose a  { @apply underline; }
+        .prose ul { @apply list-disc list-inside mb-4 space-y-1; }
+        .prose ol { @apply list-decimal list-inside mb-4 space-y-1; }
+        .prose blockquote { @apply border-l-4 border-gray-300 dark:border-gray-600 pl-4 italic text-gray-500 dark:text-gray-400 my-4; }
+        .prose code { @apply bg-gray-100 dark:bg-gray-800 px-1 py-0.5 rounded text-sm font-mono; }
+        .prose pre  { @apply bg-gray-100 dark:bg-gray-800 p-4 rounded-lg overflow-x-auto mb-4; }
+    </style>
+</head>
+
+<body class="bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 min-h-screen transition-colors duration-200">
+
+    <!-- Navigation -->
+    <nav class="border-b border-gray-200 dark:border-gray-800 sticky top-0 bg-white dark:bg-gray-900 z-10">
+        <div class="max-w-3xl mx-auto px-4 py-4 flex items-center justify-between">
+
+            <a href="/" class="font-bold text-lg tracking-tight hover:opacity-75 transition-opacity">
+                Shriyans' Blog
+            </a>
+
+            <div class="flex items-center gap-5">
+                {% for cat in categories %}
+                <a href="/category/{{ cat.slug }}"
+                   class="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors">
+                    {{ cat.name }}
+                </a>
+                {% endfor %}
+
+                <a href="/about"
+                   class="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors">
+                    About
+                </a>
+
+                <!-- Dark mode toggle -->
+                <button id="theme-toggle"
+                        class="p-1.5 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors text-base leading-none">
+                    <span id="theme-icon">🌙</span>
+                </button>
+            </div>
+
+        </div>
+    </nav>
+
+    <!-- Page content injected here -->
+    <main class="max-w-3xl mx-auto px-4 py-12">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-gray-200 dark:border-gray-800 mt-16">
+        <div class="max-w-3xl mx-auto px-4 py-6 text-sm text-center text-gray-400 dark:text-gray-500">
+            © 2026 Shriyans Mitra &nbsp;·&nbsp; Built from scratch with Python & Flask 🛠️
+        </div>
+    </footer>
+
+    <script src="/static/js/theme.js"></script>
+</body>
+</html>

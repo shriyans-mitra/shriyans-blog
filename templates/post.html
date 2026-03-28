@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ post.title }} · Shriyans' Blog{% endblock %}
+
+{% block content %}
+<article>
+    <header class="mb-10">
+        <div class="flex items-center gap-2 text-sm text-gray-400 dark:text-gray-500 mb-3">
+            <time>{{ post.created_at.strftime('%B %d, %Y') }}</time>
+            {% if post.category %}
+            <span>·</span>
+            <a href="/category/{{ post.category.slug }}"
+               class="hover:text-gray-700 dark:hover:text-gray-300 transition-colors">
+                {{ post.category.name }}
+            </a>
+            {% endif %}
+        </div>
+        <h1 class="text-4xl font-bold leading-tight">{{ post.title }}</h1>
+    </header>
+
+    <div class="prose dark:prose-invert text-gray-700 dark:text-gray-300">
+        {{ post.content | safe }}
+    </div>
+
+    <div class="mt-14 pt-8 border-t border-gray-200 dark:border-gray-800">
+        <a href="/" class="text-sm text-gray-500 hover:text-gray-900 dark:hover:text-white transition-colors">
+            ← All posts
+        </a>
+    </div>
+</article>
+{% endblock %}
