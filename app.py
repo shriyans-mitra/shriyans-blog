@@ -1,4 +1,5 @@
 import re
+import os 
 from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_login import LoginManager, login_user, logout_user, login_required
 from config import Config
@@ -54,6 +55,18 @@ def category(slug):
 def about():
     categories = Category.query.all()
     return render_template('about.html', categories=categories)
+
+@app.route('/setup/<secret>')
+def setup(secret):
+    if secret != os.environ.get('SETUP_SECRET'):
+        return 'Forbidden', 403
+    if User.query.first():
+        return 'Admin already exists.'
+    admin = User(username='shriyans')
+    admin.set_password('choose-a-strong-password')
+    db.session.add(admin)
+    db.session.commit()
+    return 'Admin created successfully! Delete this route now.'
 
 
 # ── Admin Routes ──────────────────────────────────────────
