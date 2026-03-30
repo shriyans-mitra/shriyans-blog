@@ -56,18 +56,6 @@ def about():
     categories = Category.query.all()
     return render_template('about.html', categories=categories)
 
-@app.route('/setup/<secret>')
-def setup(secret):
-    if secret != os.environ.get('SETUP_SECRET'):
-        return 'Forbidden', 403
-    if User.query.first():
-        return 'Admin already exists.'
-    admin = User(username='shriyans')
-    admin.set_password('choose-a-strong-password')
-    db.session.add(admin)
-    db.session.commit()
-    return 'Admin created successfully! Delete this route now.'
-
 
 # ── Admin Routes ──────────────────────────────────────────
 
