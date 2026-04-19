@@ -58,15 +58,6 @@ def about():
 
 
 # ── Admin Routes ──────────────────────────────────────────
-@app.route('/reset-password/<secret>')
-def reset_password(secret):
-    if secret != os.environ.get('SETUP_SECRET'):
-        return 'Forbidden', 403
-    user = User.query.first()
-    user.username = 'shriyans'
-    user.set_password('Lamada22#1')
-    db.session.commit()
-    return 'Password reset!'
 
 @app.route('/admin/login', methods=['GET', 'POST'])
 def admin_login():
